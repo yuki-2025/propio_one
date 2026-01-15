@@ -7,10 +7,10 @@ export default function AgentPage() {
             <header className="flex items-center justify-between mb-4">
                 <div>
                     <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
-                        Conversational Analytics Agent
+                        Real-time Voice Agent
                     </h1>
                     <p className="text-muted-foreground mt-2">
-                        Real-time monitoring and AI-assisted analysis
+                        Real-time Agent
                     </p>
                 </div>
                 <div className="flex items-center gap-4">

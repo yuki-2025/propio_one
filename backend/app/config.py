@@ -28,6 +28,10 @@ class Settings:
     OPENAI_MAX_TOKENS: int = int(os.getenv("OPENAI_MAX_TOKENS", "1000"))
     OPENAI_TIMEOUT: int = int(os.getenv("OPENAI_TIMEOUT", "10"))
     
+    # OpenAI Realtime API Settings
+    openai_api_key: str = os.getenv("OPENAI_API_KEY", "")
+    openai_realtime_model: str = os.getenv("OPENAI_REALTIME_MODEL", "gpt-realtime")
+    
     # CORS Settings
     CORS_ORIGINS: list = ["*"]
     

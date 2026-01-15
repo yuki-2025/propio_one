@@ -6,7 +6,7 @@ import logging
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 import mlflow
 
@@ -14,6 +14,7 @@ from .config import settings
 from .models import HealthResponse
 from .routers import chat_router, set_agent
 from .services import create_simple_agent
+from .routers.websocket import websocket_endpoint
 
 # ============ Logging Configuration ============
 logging.basicConfig(
@@ -117,6 +118,34 @@ async def health_check():
         status="healthy",
         agent_initialized=app.state.agent is not None
     )
+
+
+# ============ WebSocket Route ============
+@app.websocket("/ws")
+async def websocket_route(websocket: WebSocket):
+    """
+    WebSocket endpoint for real-time voice communication.
+
+    This endpoint connects the frontend to OpenAI Realtime API,
+    acting as a bidirectional proxy for audio and event streaming.
+
+    Usage from frontend:
+        const ws = new WebSocket('ws://localhost:8000/ws')
+
+        // Send audio
+        ws.send(JSON.stringify({
+            type: 'audio',
+            audio: 'base64_encoded_pcm16_audio'
+        }))
+
+        // Receive events
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data)
+            console.log('Received:', data.type)
+        }
+    """
+    logger.info("WebSocket connection initiated")
+    await websocket_endpoint(websocket)
 
 
 # ============ Run Server ============
